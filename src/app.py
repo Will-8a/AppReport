@@ -1,11 +1,13 @@
 from flask import Flask
 from flask import render_template
+from flask_mysqldb import MySQL
 from flask_wtf.csrf import CSRFProtect
 
 from config import config
 
 app = Flask(__name__)
 csrf = CSRFProtect()
+mysql = MySQL(app)
 
 
 @app.route('/')
