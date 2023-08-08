@@ -1,9 +1,11 @@
 from flask import Flask
 from flask import render_template
+from flask_wtf.csrf import CSRFProtect
 
 from config import config
 
 app = Flask(__name__)
+csrf = CSRFProtect()
 
 
 @app.route('/')
@@ -19,5 +21,6 @@ def login():
 if __name__ == '__main__':
     # Se selecciona el ambiente
     config_name = 'development'
+    csrf.init_app(app)
     app.config.from_object(config[config_name])
     app.run(port=app.config['PORT'], host=app.config['HOST'])
