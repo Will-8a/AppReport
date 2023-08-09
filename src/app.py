@@ -1,9 +1,16 @@
 from flask import Flask
 from flask import (
     render_template,
-    request
+    request,
+    redirect,
+    url_for,
+    flash
 )
-from flask_login import LoginManager
+from flask_login import (
+    LoginManager,
+    login_user,
+    logout_user
+)
 from flask_mysqldb import MySQL
 from flask_wtf.csrf import CSRFProtect
 
@@ -44,7 +51,26 @@ def login():
             mysql=mysql,
             user=entidad_usuario
         )
+
+        if usuario_logeado is None:
+            flash('Usuario no encontrado')
+            return render_template('auth/login.html')
+        else:
+            contrasena_valida = usuario_logeado.contrasena
+            if contrasena_valida:
+                login_user(usuario_logeado)
+                return redirect(url_for('index'))
+            else:
+                flash('Contraseña invalida')
+                return render_template('auth/login.html')
     return render_template('auth/login.html')
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    flash('Ha finalizado la sesion')
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
