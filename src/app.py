@@ -1,5 +1,8 @@
 from flask import Flask
-from flask import render_template
+from flask import (
+    render_template,
+    request
+)
 from flask_login import LoginManager
 from flask_mysqldb import MySQL
 from flask_wtf.csrf import CSRFProtect
@@ -8,6 +11,9 @@ from config import config
 
 # Models
 from models.model_user import ModelUser
+
+# Entities
+from models.entities.user import User
 
 app = Flask(__name__)
 csrf = CSRFProtect()
@@ -27,6 +33,17 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        # Crea un objeto para almacenar los datos
+        # del usuario
+        entidad_usuario = User(
+            cedula=request.form.get('username'),
+            contrasena=request.form.get('password')
+        )
+        usuario_logeado = ModelUser.login(
+            mysql=mysql,
+            user=entidad_usuario
+        )
     return render_template('auth/login.html')
 
 
