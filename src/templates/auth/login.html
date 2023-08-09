@@ -9,6 +9,19 @@
         <div></div>
         <h2>Iniciar sesion.</h2>
         <div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <br>
+                    {% for message in messages %}
+                    <!-- Div con el alert -->
+                    <div>
+                        <strong>{{ message }}</strong>
+                        <!-- boton para cerrar el alert -->
+                        <button type="button">X</button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
             <form id="loginform" action="/login" method="POST">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="text" name="username" autocomplete="username" placeholder="Usuario" required>
