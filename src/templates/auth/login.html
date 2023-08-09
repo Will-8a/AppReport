@@ -10,6 +10,7 @@
         <h2>Iniciar sesion.</h2>
         <div>
             <form id="loginform" action="/login" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="text" name="username" autocomplete="username" placeholder="Usuario" required>
                 
                 <input type="password" name="password" autocomplete="current-password" placeholder="Contraseña" required>
