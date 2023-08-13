@@ -1,3 +1,4 @@
+from decimal import Decimal
 from .user import User
 from werkzeug.security import generate_password_hash
 
@@ -42,3 +43,34 @@ class Administrador(User):
         # Regresa True si se realizaron los cambios correctamente
         # en la base de datos
         return True
+
+    def read_usuario_estudiante(self, mysql, cedula):
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.callproc(
+                'read_usuario_estudiante',
+                (cedula, )
+            )
+            result = cursor.fetchone()
+            if result is None:
+                return None
+            else:
+                informacion_usuario_estudiante = {
+                    'cedula': result[0],
+                    'nombre_1': result[1],
+                    'nombre_2': result[2],
+                    'apellido_paterno': result[3],
+                    'apellido_materno': result[4],
+                    'e_mail': result[5],
+                    'tipo_de_usuario': result[7],
+                    'id_tutor': result[8],
+                    'carrera': result[9],
+                    'cantidad_reportes': result[10],
+                    'horas_acumuladas': Decimal(result[11])
+                }
+                return informacion_usuario_estudiante
+        except Exception as e:
+            print(str(e))
+            return None
+        finally:
+            cursor.close()
