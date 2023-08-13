@@ -33,3 +33,24 @@ begin
     on usuario.cedula = estudiante.id_estudiante
     where usuario.cedula = ced;
 end$
+
+-------------------------------------------------------------------------
+-- Update procedures
+-------------------------------------------------------------------------
+-- Update usuario_estudiante
+delimiter $
+create procedure update_usuario_estudiante(
+    in ced varchar(20), in nom1 varchar(32), in nom2 varchar(32),
+    in app varchar(32), in apm varchar(32),in e_mail varchar(45),
+    in tu varchar(20), in id_t varchar(20), in car varchar(64)
+)
+begin
+    update usuario set nombre_1 = nom1, nombre_2 = nom2,
+    apellido_p = app, apellido_m = apm, email = e_mail,
+    tipo_de_usuario = tu where cedula = ced;
+
+    update estudiante set id_tutor = id_t, carrera = car
+    where id_estudiante = ced;
+
+    update tutor set id_tutor = id_t where id_estudiante = ced;
+end$
