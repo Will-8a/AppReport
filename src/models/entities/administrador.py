@@ -74,3 +74,36 @@ class Administrador(User):
             return None
         finally:
             cursor.close()
+
+    def update_usuario_estudiante(self, mysql, datos):
+        datos.update(
+            {
+                'nombre_1': datos.get('nombre_1').upper(),
+                'nombre_2': datos.get('nombre_2').upper(),
+                'apellido_paterno': datos.get('apellido_paterno').upper(),
+                'apellido_materno': datos.get('apellido_materno').upper(),
+                'e_mail': datos.get('e_mail').upper(),
+                'tipo_de_usuario': datos.get('tipo_de_usuario').upper(),
+                'carrera': datos.get('carrera').upper()
+            }
+        )
+        tupla_datos = tuple(datos.values())
+        try:
+            cursor = mysql.connection.cursor()
+
+            cursor.callproc(
+                'update_usuario_estudiante',
+                tupla_datos
+            )
+
+            mysql.connection.commit()
+        except Exception as e:
+            mysql.connection.rollback()
+            print(str(e))
+            return False
+        finally:
+            cursor.close()
+
+        # Regresa True si se realizaron los cambios correctamente
+        # en la base de datos
+        return True
