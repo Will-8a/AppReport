@@ -107,3 +107,21 @@ class Administrador(User):
         # Regresa True si se realizaron los cambios correctamente
         # en la base de datos
         return True
+
+    def delete_usuario_estudiante(self, mysql, cedula):
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.callproc(
+                'delete_usuario_estudiante',
+                (cedula, )
+            )
+            mysql.connection.commit()
+        except Exception as e:
+            mysql.connection.rollback()
+            print(str(e))
+            return False
+        finally:
+            cursor.close()
+        # Regresa True si se realizaron los cambios
+        # correctamente en la base de datos
+        return True
