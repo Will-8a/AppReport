@@ -54,3 +54,15 @@ begin
 
     update tutor set id_tutor = id_t where id_estudiante = ced;
 end$
+
+-------------------------------------------------------------------------
+-- Delete procedures
+-------------------------------------------------------------------------
+-- Delete usuario_estudiante
+delimiter $
+create procedure delete_usuario_estudiante(in ced varchar(20))
+begin
+    delete from usuario where cedula = ced;
+    delete from estudiante where id_estudiante = ced;
+    delete from tutor where id_estudiante = ced;
+end$
