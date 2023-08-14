@@ -15,6 +15,17 @@ begin
     insert into tutor values (id_t, ced);
 end$
 
+-- Create usuario_tutor
+delimiter $
+create procedure create_usuario_tutor(
+    in ced varchar(20), in nom1 varchar(32), in nom2 varchar(32),
+    in app varchar(32), in apm varchar(32), in e_mail varchar(45),
+    in con char(105), in tu varchar(20)
+)
+begin
+    insert into usuario values (ced, nom1, nom2, app, apm, e_mail, con, tu);
+end$
+
 -------------------------------------------------------------------------
 -- Read procedures
 -------------------------------------------------------------------------
