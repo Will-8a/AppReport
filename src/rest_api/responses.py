@@ -144,6 +144,40 @@ def usuario_actualizado_en_base_de_datos(tipo_de_usuario):
     return data
 
 
+# Respuesta cuando se elimina un usuario de la base de datos
+def usuario_eliminado_en_base_de_datos(cedula):
+    '''
+    Retorna una respuesta cuando un usuario ha sido eliminado en
+    la base de datos.
+
+    Params:
+    -------
+    cedula : str
+        Una cadena de texto que identifica el la cedula del usuario
+        que se ha eliminado en la base de datos
+
+    Returns:
+    -------
+    dict
+        Diccionario con el estado y la respuesta de la eliminacion del
+        usuario. El estado es siempre True y la respuesta contiene un mensaje
+        indicando que el usuario ha sido eliminado y el tipo de respuesta,
+        ademas se agrega un espacio para la cedula del tipo de usuario
+    '''
+    data = {
+        'status': True,
+        'response': {
+            'message': 'Usuario {} eliminado en base de datos'.format(
+                cedula
+            ),
+            'type': 'USER_{}_UPDATE_IN_DATABASE'.format(
+                cedula
+            )
+        }
+    }
+    return data
+
+
 # Respuesta para cuando ocurrio un error interno
 def error_interno():
     '''
