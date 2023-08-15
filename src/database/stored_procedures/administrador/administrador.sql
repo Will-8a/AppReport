@@ -88,6 +88,16 @@ begin
     tipo_de_usuario = tu where cedula = ced;
 end$
 
+-- Update estatus_reporte (administrador)
+delimiter $
+create procedure update_estatus_reporte_administrador(
+    in id_r int, in estatus varchar(12)
+)
+begin
+    update reportes_semanales set aprobacion_coordinador = estatus
+    where id_reporte = id_r;
+end$
+
 -------------------------------------------------------------------------
 -- Delete procedures
 -------------------------------------------------------------------------
