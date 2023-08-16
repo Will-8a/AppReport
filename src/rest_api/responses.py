@@ -178,6 +178,21 @@ def usuario_eliminado_en_base_de_datos(cedula):
     return data
 
 
+def estatus_reporte_cambiado(id_reporte, estatus_reporte, status=True):
+    data = {
+        'status': status,
+        'response': {
+            'message': 'Reporte {} {} exitosamente'.format(
+                id_reporte, estatus_reporte.lower()
+            ),
+            'type': 'REPORTE_{}_STATUS_UPDATE_IN_DATABASE'.format(
+                id_reporte
+            )
+        }
+    }
+    return data
+
+
 # Respuesta para cuando ocurrio un error interno
 def error_interno():
     '''
