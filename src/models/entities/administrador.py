@@ -69,7 +69,7 @@ class Administrador(User):
         except Exception as e:
             mysql.connection.rollback()
             print(str(e))
-            raise False
+            return False
         finally:
             # cerrar el cursor
             cursor.close()
