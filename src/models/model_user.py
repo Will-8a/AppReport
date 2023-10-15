@@ -1,5 +1,6 @@
 from .entities.administrador import Administrador
 from .entities.estudiante import Estudiante
+from .entities.tutor import Tutor
 
 
 class ModelUser():
@@ -53,6 +54,15 @@ class ModelUser():
                         ),
                         datos=user_information
                     )
+                elif user_information.get('tipo_de_usuario') == 'TUTOR':
+                    user = Tutor(
+                        cedula=row[0],
+                        contrasena=Tutor.check_password(
+                            hashed_password=row[6],
+                            contrasena=user.contrasena
+                        ),
+                        datos=user_information
+                    )
                 return user
             return None
         except Exception as e:
@@ -99,6 +109,12 @@ class ModelUser():
                     })
 
                     usuario_logeado = Estudiante(
+                        cedula=row[0],
+                        contrasena=None,
+                        datos=user_information
+                    )
+                elif user_information.get('tipo_de_usuario') == 'TUTOR':
+                    usuario_logeado = Tutor(
                         cedula=row[0],
                         contrasena=None,
                         datos=user_information
