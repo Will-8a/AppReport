@@ -15,3 +15,13 @@ begin
     select cedula, nombre_1, nombre_2, apellido_p, apellido_m, email,
     tipo_de_usuario from usuario where cedula = ced;
 end$
+
+-- Read reporte_especifico
+create procedure read_reporte_especifico(
+    in id_e varchar(20), in num_rep int
+)
+begin
+    select * from reportes_semanales
+    where id_estudiante = id_e
+    and numero_reporte = num_rep;
+end$

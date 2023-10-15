@@ -29,17 +29,6 @@ begin
     where id_estudiante = id_e;
 end$
 
--- Read reporte_especifico
-delimiter $
-create procedure read_reporte_especifico(
-    in id_e varchar(20), in num_rep int
-)
-begin
-    select * from reportes_semanales
-    where id_estudiante = id_e
-    and numero_reporte = num_rep;
-end$
-
 -------------------------------------------------------------------------
 -- Update procedures
 -------------------------------------------------------------------------
