@@ -1,4 +1,6 @@
 from .entities.administrador import Administrador
+from .entities.estudiante import Estudiante
+from .entities.tutor import Tutor
 
 
 class ModelUser():
@@ -29,7 +31,38 @@ class ModelUser():
                             hashed_password=row[6],
                             contrasena=user.contrasena),
                         datos=user_information)
+                elif user_information.get('tipo_de_usuario') == 'ESTUDIANTE':
+                    cursor.close()
+                    cursor = mysql.connection.cursor()
+                    cursor.callproc(
+                        'read_datos_estudiante',
+                        (cedula, )
+                    )
+                    row = cursor.fetchone()
+                    user_information.update({
+                        'id_tutor': row[0],
+                        'carrera': row[1],
+                        'cantidad_reportes': row[2],
+                        'horas_acumuladas': row[3]
+                    })
 
+                    user = Estudiante(
+                        cedula=user_information.get('cedula'),
+                        contrasena=Estudiante.check_password(
+                            hashed_password=user_information.get('contrasena'),
+                            contrasena=user.contrasena
+                        ),
+                        datos=user_information
+                    )
+                elif user_information.get('tipo_de_usuario') == 'TUTOR':
+                    user = Tutor(
+                        cedula=row[0],
+                        contrasena=Tutor.check_password(
+                            hashed_password=row[6],
+                            contrasena=user.contrasena
+                        ),
+                        datos=user_information
+                    )
                 return user
             return None
         except Exception as e:
@@ -60,6 +93,32 @@ class ModelUser():
                         cedula=row[0],
                         contrasena=None,
                         datos=user_information)
+                elif user_information.get('tipo_de_usuario') == 'ESTUDIANTE':
+                    cursor.close()
+                    cursor = mysql.connection.cursor()
+                    cursor.callproc(
+                        'read_datos_estudiante',
+                        (cedula, )
+                    )
+                    row = cursor.fetchone()
+                    user_information.update({
+                        'id_tutor': row[0],
+                        'carrera': row[1],
+                        'cantidad_reportes': row[2],
+                        'horas_acumuladas': row[3]
+                    })
+
+                    usuario_logeado = Estudiante(
+                        cedula=row[0],
+                        contrasena=None,
+                        datos=user_information
+                    )
+                elif user_information.get('tipo_de_usuario') == 'TUTOR':
+                    usuario_logeado = Tutor(
+                        cedula=row[0],
+                        contrasena=None,
+                        datos=user_information
+                    )
                 return usuario_logeado
             return None
         except Exception as e:
