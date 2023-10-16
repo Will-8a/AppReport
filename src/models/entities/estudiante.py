@@ -71,6 +71,42 @@ class Estudiante(User):
         finally:
             cursor.close()
 
+    def read_reportes_estudiante_especifico(self, mysql, datos):
+        tupla_datos = tuple(datos.values())
+
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.callproc(
+                'read_reportes_estudiante_especifico',
+                tupla_datos
+            )
+            reportes = {}
+            results = cursor.fetchall()
+            for result in results:
+                id_reporte = result[0]
+                reportes.update({
+                    'reporte_{}'.format(id_reporte): {
+                        'id_reporte': result[0],
+                        'id_tutor': result[2],
+                        'numero_reporte': result[3],
+                        'horas_reporte': float(result[4]),
+                        'aprobacion_tutor': result[5],
+                        'aprobacion_coordinador': result[6],
+                        'resumen_domingo': result[7],
+                        'resumen_lunes': result[8],
+                        'resumen_martes': result[9],
+                        'resumen_miercoles': result[10],
+                        'resumen_jueves': result[11],
+                        'resumen_viernes': result[12]
+                    }
+                })
+            return reportes
+        except Exception as e:
+            print(str(e))
+            return None
+        finally:
+            cursor.close()
+
     def read_datos_estudiante(self, mysql, datos):
         tupla_datos = (datos.get('cedula_estudiante'), )
         try:
