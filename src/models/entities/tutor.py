@@ -38,13 +38,13 @@ class Tutor(User):
         finally:
             cursor.close()
 
-    def read_reportes_estudiantes(self, mysql, datos):
+    def read_reportes_tutorados(self, mysql, datos):
         tupla_datos = tuple(datos.values())
 
         try:
             cursor = mysql.connection.cursor()
             cursor.callproc(
-                'read_reportes_estudiante_tutor',
+                'read_reportes_tutorados',
                 tupla_datos
             )
             reportes = {}
