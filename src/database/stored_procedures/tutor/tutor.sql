@@ -1,15 +1,14 @@
 -------------------------------------------------------------------------
 -- Read procedures
 -------------------------------------------------------------------------
--- Read reportes_estudiante (tutor)
+-- Read read_reportes_tutorados
 delimiter $
-create procedure read_reportes_estudiante_tutor(
-    in id_es varchar(20), in id_t varchar(20)
+create procedure read_reportes_tutorados(
+    in id_t varchar(20)
 )
 begin
-    select * from reportes_semanales
-    where id_estudiante = id_es
-    and id_tutor = id_t;
+        select * from reportes_semanales
+        where id_tutor = id_t;
 end$
 
 -- Read estudiantes tutorados()
