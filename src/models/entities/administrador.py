@@ -135,6 +135,39 @@ class Administrador(User):
         finally:
             cursor.close()
 
+    def read_reporte_especifico(self, mysql, datos):
+        tupla_datos = tuple(datos.values())
+
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.callproc(
+                'read_reporte_especifico',
+                tupla_datos
+            )
+            result = cursor.fetchone()
+            if result is None:
+                return None
+            else:
+                informacion_reporte = {
+                    'id_reporte': result[0],
+                    'numero_reporte': result[3],
+                    'horas_reporte': float(result[4]),
+                    'aprobacion_tutor': result[5],
+                    'aprobacion_coordinador': result[6],
+                    'resumen_domingo': result[7],
+                    'resumen_lunes': result[8],
+                    'resumen_martes': result[9],
+                    'resumen_miercoles': result[10],
+                    'resumen_jueves': result[11],
+                    'resumen_viernes': result[12]
+                }
+                return informacion_reporte
+        except Exception as e:
+            print(str(e))
+            return None
+        finally:
+            cursor.close()
+
     def update_usuario_estudiante(self, mysql, datos):
         datos.update(
             {
