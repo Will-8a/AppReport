@@ -178,7 +178,29 @@ def usuario_eliminado_en_base_de_datos(cedula):
     return data
 
 
+# respuesta cuando se actualiza un reporte en la base de datos
 def estatus_reporte_cambiado(id_reporte, estatus_reporte, status=True):
+    '''
+    Retorna una respuesta cuando un reporte ha sido actualizado en
+    la base de datos.
+
+    Params:
+    -------
+    id_reporte : str
+        Una cadena de texto que funciona como el identificador del
+        reporte que se ha actualizado en la base de datos
+
+    estatus_reporte : str
+        Una cadena de texto que especifica el estatus del reporte
+        actualizado en la base de datos
+    Returns:
+    -------
+    dict
+        Diccionario con el estado y la respuesta de la actualizacion del
+        estado del reporte es siempre True y la respuesta contiene un mensaje
+        indicando el estado ha sido actualizado y el identificador del reporte,
+        ademas se agrega espacios para el id del reporte y el estado
+    '''
     data = {
         'status': status,
         'response': {

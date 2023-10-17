@@ -259,6 +259,69 @@ class RestApi:
         )
         return jsonify(data)
 
+    def read_reporte_especifico(self, mysql, current_user, request_cliente):
+        # Verifica que el usuario no sea anonimo
+        if current_user.is_anonymous:
+            return self.usuario_anonimo()
+
+        cedula_estudiante = request_cliente.get('cedula_estudiante')
+        numero_reporte = request_cliente.get('numero_reporte')
+
+        if cedula_estudiante == 'undefined' or cedula_estudiante is None:
+            message = 'Debe especificar la cedula del estudiante'
+            error_type = 'CEDULA_ESTUDIANTE_NOT_SPECIFIED'
+            data = responses.campo_faltante(
+                message=message,
+                error_type=error_type
+            )
+            return jsonify(data)
+
+        if numero_reporte == 'undefined' or numero_reporte is None:
+            message = 'Debe especificar el numero del reporte'
+            error_type = 'NUMERO_REPORTE_NOT_SPECIFIED'
+            data = responses.campo_faltante(
+                message=message,
+                error_type=error_type
+            )
+            return jsonify(data)
+
+        datos = {
+            'cedula_estudiante': cedula_estudiante,
+            'numero_reporte': numero_reporte
+        }
+
+        data = current_user.read_reporte_especifico(
+            mysql=mysql,
+            datos=datos
+        )
+        return jsonify(data)
+
+    def read_reportes_estudiante_especifico(self, mysql, current_user, request_cliente):
+        # Verifica que el usuario no sea anonimo
+        if current_user.is_anonymous:
+            return self.usuario_anonimo()
+
+        cedula_estudiante = request_cliente.get('cedula_estudiante')
+
+        if cedula_estudiante == 'undefined' or cedula_estudiante is None:
+            message = 'Debe especificar la cedula del estudiante'
+            error_type = 'CEDULA_ESTUDIANTE_NOT_SPECIFIED'
+            data = responses.campo_faltante(
+                message=message,
+                error_type=error_type
+            )
+            return jsonify(data)
+
+        datos = {
+            'cedula_estudiante': cedula_estudiante
+        }
+
+        data = current_user.read_reportes_estudiante_especifico(
+            mysql=mysql,
+            datos=datos
+        )
+        return jsonify(data)
+
     def update_usuario_estudiante(self, mysql, current_user, request_cliente):
         # Verifica que el usuario no sea anonimo
         if current_user.is_anonymous:
@@ -417,6 +480,55 @@ class RestApi:
         if actualizado_en_db:
             respuesta_api = responses.usuario_actualizado_en_base_de_datos(
                 tipo_de_usuario=nuevos_datos_usuario.get('tipo_de_usuario')
+            )
+        else:
+            respuesta_api = responses.error_interno()
+
+        return jsonify(respuesta_api)
+
+    def update_estatus_reporte(self, mysql, current_user, request_cliente):
+        # Verifica que el usuario no sea anonimo
+        if current_user.is_anonymous:
+            return self.usuario_anonimo()
+
+        # Verifica si el usuario es tipo estudiante
+        if current_user.tipo_de_usuario == 'ESTUDIANTE':
+            return self.usuario_no_autorizado()
+
+        if request_cliente.get('estatus_reporte') is None:
+            message = 'Debe especificar el estatus del reporte'
+            error_type = 'ESTATUS_REPORTE_NOT_SPECIFIED'
+            data = responses.campo_faltante(
+                message=message,
+                error_type=error_type
+            )
+            return jsonify(data)
+
+        if request_cliente.get('id_reporte') is None:
+            message = 'Debe especificar el id del reporte'
+            error_type = 'ID_REPORTE_NOT_SPECIFIED'
+            data = responses.campo_faltante(
+                message=message,
+                error_type=error_type
+            )
+            return jsonify(data)
+
+        datos_reporte = {
+            'id_reporte': request_cliente.get('id_reporte'),
+            'estatus': request_cliente.get('estatus_reporte')
+        }
+
+        actualizado_en_db = current_user.update_estatus_reporte(
+            mysql=mysql,
+            datos=datos_reporte
+        )
+
+        respuesta_api = {}
+
+        if actualizado_en_db:
+            respuesta_api = responses.estatus_reporte_cambiado(
+                id_reporte=datos_reporte.get('id_reporte'),
+                estatus_reporte=request_cliente.get('estatus_reporte')
             )
         else:
             respuesta_api = responses.error_interno()
