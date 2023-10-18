@@ -10,7 +10,7 @@ create procedure create_nuevo_reporte(
 )
 begin
     insert into reportes_semanales values(
-        null, id_e, id_t, num_rep, h_rep, "sin aprobar", "sin aprobar", res_dom,
+        null, id_e, id_t, num_rep, h_rep, "SIN APROBAR", "SIN APROBAR", res_dom,
         res_lun, res_mar, res_mie, res_jue, res_vie
     );
 end$
