@@ -322,6 +322,40 @@ class RestApi:
         )
         return jsonify(data)
 
+    def read_reportes_tutorados(self, mysql, current_user, request_cliente):
+        # Verifica que el usuario no sea anonimo
+        if current_user.is_anonymous:
+            return self.usuario_anonimo()
+
+        # Verifica que el usuario es tutor
+        if current_user.tipo_de_usuario != 'TUTOR':
+            return self.usuario_no_autorizado()
+
+        cedula_tutor = request_cliente.get('cedula_tutor')
+
+        if cedula_tutor == 'undefined' or cedula_tutor is None:
+            message = 'Debe especificar la cedula del tutor'
+            error_type = 'CEDULA_TUTOR_NOT_SPECIFIED'
+            return self.campo_faltante(
+                message=message,
+                error_type=error_type
+            )
+
+        datos = {
+            'id_tutor': request_cliente.get('cedula_tutor')
+        }
+
+        print(datos)
+
+        respuesta_api = current_user.read_reportes_tutorados(
+            mysql=mysql,
+            datos=datos
+        )
+
+        # agregar respuestas para cuando
+        # no hay reportes para mostrar
+        return jsonify(respuesta_api)
+
     def update_usuario_estudiante(self, mysql, current_user, request_cliente):
         # Verifica que el usuario no sea anonimo
         if current_user.is_anonymous:
@@ -513,10 +547,28 @@ class RestApi:
             )
             return jsonify(data)
 
-        datos_reporte = {
-            'id_reporte': request_cliente.get('id_reporte'),
-            'estatus': request_cliente.get('estatus_reporte')
-        }
+        datos_reporte = {}
+
+        if current_user.tipo_de_usuario == 'TUTOR':
+            if request_cliente.get('cedula_tutor') is None:
+                message = 'Debe especificar la cedula del tutor'
+                error_type = 'CEDULA_TUTOR_NOT_SPECIFIED'
+                data = responses.campo_faltante(
+                    message=message,
+                    error_type=error_type
+                )
+                return jsonify(data)
+
+            datos_reporte = {
+                'estatus': request_cliente.get('estatus_reporte'),
+                'id_reporte': request_cliente.get('id_reporte'),
+                'cedula_tutor': request_cliente.get('cedula_tutor')
+            }
+        else:
+            datos_reporte = {
+                'id_reporte': request_cliente.get('id_reporte'),
+                'estatus': request_cliente.get('estatus_reporte')
+            }
 
         actualizado_en_db = current_user.update_estatus_reporte(
             mysql=mysql,
