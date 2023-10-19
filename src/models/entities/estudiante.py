@@ -38,7 +38,7 @@ class Estudiante(User):
         return True
 
     # read reporte
-    def read_reporte(self, mysql, datos):
+    def read_reporte_especifico(self, mysql, datos):
         tupla_datos = tuple(datos.values())
 
         try:
@@ -149,7 +149,7 @@ class Estudiante(User):
             cursor.close()
 
     # update reporte
-    def update_reporte(self, mysql, datos):
+    def update_reporte_especifico(self, mysql, datos):
         tupla_datos = tuple(datos.values())
         try:
             cursor = mysql.connection.cursor()
