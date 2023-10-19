@@ -315,7 +315,9 @@ class RestApi:
         if current_user.tipo_de_usuario != 'ADMINISTRADOR':
             return self.usuario_no_autorizado()
 
-        if request_cliente.get('cedula_estudiante') is None:
+        cedula_estudiante = request_cliente.get('cedula_estudiante')
+
+        if cedula_estudiante == 'undefined' or cedula_estudiante is None:
             message = 'Debe especificar la cedula del estudiante'
             error_type = 'CEDULA_ESTUDIANTE_NOT_SPECIFIED'
             return self.campo_faltante(
@@ -325,7 +327,7 @@ class RestApi:
 
         respuesta_api = current_user.read_usuario_estudiante(
             mysql=mysql,
-            cedula=request_cliente.get('cedula_estudiante')
+            cedula=cedula_estudiante
         )
         return jsonify(respuesta_api)
 
@@ -338,7 +340,9 @@ class RestApi:
         if current_user.tipo_de_usuario != 'ADMINISTRADOR':
             return self.usuario_no_autorizado()
 
-        if request_cliente.get('cedula_tutor') is None:
+        cedula_tutor = request_cliente.get('cedula_tutor')
+
+        if cedula_tutor == 'undefined' or cedula_tutor is None:
             message = 'Debe especificar la cedula del tutor'
             error_type = 'CEDULA_TUTOR_NOT_SPECIFIED'
             data = responses.campo_faltante(
@@ -349,7 +353,7 @@ class RestApi:
 
         data = current_user.read_usuario_tutor(
             mysql=mysql,
-            cedula=request_cliente.get('cedula_tutor'),
+            cedula=cedula_tutor,
         )
         return jsonify(data)
 
