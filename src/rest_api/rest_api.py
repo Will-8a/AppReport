@@ -29,6 +29,11 @@ class RestApi:
                 return request_value
         return database_value
 
+    def comparar_resumen(self, resumen_del_dia):
+        if resumen_del_dia is not None:
+            return resumen_del_dia
+        return ''
+
     def create_usuario_estudiante(self, mysql, current_user, request_cliente):
         # Verifica que el usuario no sea anonimo
         if current_user.is_anonymous:
@@ -207,6 +212,95 @@ class RestApi:
             respuesta_api = responses.usuario_guardado_en_base_de_datos(
                 tipo_de_usuario='TUTOR'
             )
+        else:
+            respuesta_api = responses.error_interno()
+
+        return jsonify(respuesta_api)
+
+    def create_reporte(self, mysql, current_user, request_cliente):
+        # Verifica que el usuario no sea anonimo
+        if current_user.is_anonymous:
+            return self.usuario_anonimo()
+
+        # Verifica que el usuario es administrador
+        if current_user.tipo_de_usuario != 'ESTUDIANTE':
+            return self.usuario_no_autorizado()
+
+        cedula_estudiante = request_cliente.get('cedula_estudiante')
+        cedula_tutor = request_cliente.get('cedula_tutor')
+        numero_reporte = request_cliente.get('numero_reporte')
+        horas_reporte = request_cliente.get('horas_reporte')
+
+        error_ocurrido = False
+
+        if cedula_estudiante is None:
+            error_ocurrido = True
+            message = 'Debe especificar la cedula del estudiante'
+            error_type = 'CEDULA_ESTUDIANTE_NOT_SPECIFIED'
+
+        if cedula_tutor is None:
+            error_ocurrido = True
+            message = 'Debe especificar la cedula del tutor'
+            error_type = 'CEDULA_ESTUDIANTE_NOT_SPECIFIED'
+
+        if numero_reporte is None:
+            error_ocurrido = True
+            message = 'Debe especificar el numero de reporte'
+            error_type = 'NUMERO_REPORTE_NOT_SPECIFIED'
+
+        if horas_reporte is None:
+            error_ocurrido = True
+            message = 'Debe especificar las horas del reporte'
+            error_type = 'HORAS_REPORTE_NOT_SPECIFIED'
+
+        # Verificar si ocurrio un error y devolver json con la respuesta
+        if error_ocurrido:
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
+
+        domingo = self.comparar_resumen(
+            resumen_del_dia=request_cliente.get('resumen_domingo')
+        )
+        lunes = self.comparar_resumen(
+            resumen_del_dia=request_cliente.get('resumen_lunes')
+        )
+        martes = self.comparar_resumen(
+            resumen_del_dia=request_cliente.get('resumen_martes')
+        )
+        miercoles = self.comparar_resumen(
+            resumen_del_dia=request_cliente.get('resumen_miercoles')
+        )
+        jueves = self.comparar_resumen(
+            resumen_del_dia=request_cliente.get('resumen_jueves')
+        )
+        viernes = self.comparar_resumen(
+            resumen_del_dia=request_cliente.get('resumen_viernes')
+        )
+
+        # Diccionario con los datos del usuario estudiante
+        datos_reporte = {
+            'cedula_estudiante': cedula_estudiante,
+            'cedula_tutor': cedula_tutor,
+            'numero_reporte': numero_reporte,
+            'horas_reporte': horas_reporte,
+            'resumen_domingo': domingo,
+            'resumen_lunes': lunes,
+            'resumen_martes': martes,
+            'resumen_miercoles': miercoles,
+            'resumen_jueves': jueves,
+            'resumen_viernes': viernes
+        }
+
+        # Se ejecuta la funcion para guardar al usuario en base de datos
+        guardado_en_db = current_user.create_reporte(
+            mysql=mysql,
+            datos=datos_reporte
+        )
+
+        respuesta_api = {}
+
+        if guardado_en_db:
+            respuesta_api = responses.reporte_guardado()
         else:
             respuesta_api = responses.error_interno()
 
@@ -582,6 +676,88 @@ class RestApi:
                 id_reporte=datos_reporte.get('id_reporte'),
                 estatus_reporte=request_cliente.get('estatus_reporte')
             )
+        else:
+            respuesta_api = responses.error_interno()
+
+        return jsonify(respuesta_api)
+
+    def update_reporte_especifico(self, mysql, current_user, request_cliente):
+        # Verifica que el usuario no sea anonimo
+        if current_user.is_anonymous:
+            return self.usuario_anonimo()
+
+        # Verifica si el usuario es tipo estudiante
+        if current_user.tipo_de_usuario != 'ESTUDIANTE':
+            return self.usuario_no_autorizado()
+
+        id_reporte = request_cliente.get('id_reporte')
+        cedula_estudiante = request_cliente.get('cedula_estudiante')
+        horas_reporte = request_cliente.get('horas_reporte')
+
+        error_ocurrido = False
+
+        if id_reporte is None:
+            error_ocurrido = True
+            message = 'Debe especificar identificador del reporte'
+            error_type = 'ID_REPORTE_NOT_SPECIFIED'
+
+        if cedula_estudiante is None:
+            error_ocurrido = True
+            message = 'Debe especificar la cedula del estudiante'
+            error_type = 'CEDULA_ESTUDIANTE_NOT_SPECIFIED'
+
+        if horas_reporte is None:
+            error_ocurrido = True
+            message = 'Debe especificar las horas del reporte'
+            error_type = 'HORAS_REPORTE_NOT_SPECIFIED'
+
+        # Verificar si ocurrio un error y devolver json con la respuesta
+        if error_ocurrido:
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
+
+        domingo = self.comparar_resumen(
+            resumen_del_dia=request_cliente.get('resumen_domingo')
+        )
+        lunes = self.comparar_resumen(
+            resumen_del_dia=request_cliente.get('resumen_lunes')
+        )
+        martes = self.comparar_resumen(
+            resumen_del_dia=request_cliente.get('resumen_martes')
+        )
+        miercoles = self.comparar_resumen(
+            resumen_del_dia=request_cliente.get('resumen_miercoles')
+        )
+        jueves = self.comparar_resumen(
+            resumen_del_dia=request_cliente.get('resumen_jueves')
+        )
+        viernes = self.comparar_resumen(
+            resumen_del_dia=request_cliente.get('resumen_viernes')
+        )
+
+        # Diccionario con los datos del usuario estudiante
+        datos_reporte = {
+            'id_reporte': id_reporte,
+            'cedula_estudiante': cedula_estudiante,
+            'horas_reporte': horas_reporte,
+            'resumen_domingo': domingo,
+            'resumen_lunes': lunes,
+            'resumen_martes': martes,
+            'resumen_miercoles': miercoles,
+            'resumen_jueves': jueves,
+            'resumen_viernes': viernes
+        }
+
+        # Se ejecuta la funcion para guardar al usuario en base de datos
+        guardado_en_db = current_user.update_reporte_especifico(
+            mysql=mysql,
+            datos=datos_reporte
+        )
+
+        respuesta_api = {}
+
+        if guardado_en_db:
+            respuesta_api = responses.reporte_guardado()
         else:
             respuesta_api = responses.error_interno()
 

@@ -235,3 +235,26 @@ def error_interno():
         }
     }
     return data
+
+
+# Respuesta para cuando se guarda un nuevo reporte
+def reporte_guardado():
+    '''
+    Retorna una respuesta cuando un reporte se ha guardado
+    en la base de datos.
+
+    Returns:
+    ------
+    dict
+        Un diccionario que contiene el estado de la operación y la respuesta
+        con el mensaje. El estado es siempre True y la respuesta contiene un
+        mensaje indicando que el reporte ha sido guardado.
+    '''
+    data = {
+        'status': True,
+        'response': {
+            'message': 'Reporte guardado exitosamente',
+            'type': 'REPORTE_SAVED_IN_DATABASE'
+        }
+    }
+    return data
