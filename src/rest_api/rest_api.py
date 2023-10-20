@@ -43,51 +43,48 @@ class RestApi:
         if current_user.tipo_de_usuario != 'ADMINISTRADOR':
             return self.usuario_no_autorizado()
 
-        error_ocurrido = False
-        message = ''
-        error_type = ''
-
         # Verificar los campos requeridos en la solicitud
         if request_cliente.get('cedula_estudiante') is None:
-            error_ocurrido = True
             message = 'Debe especificar la cedula del estudiante'
             error_type = 'CEDULA_ESTUDIANTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         elif request_cliente.get('primer_nombre') is None:
-            error_ocurrido = True
             message = 'Debe especificar el primer nombre del estudiante'
             error_type = 'PRIMER_NOMBRE_ESTUDIANTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         elif request_cliente.get('primer_apellido') is None:
-            error_ocurrido = True
             message = 'Debe especificar el primer apellido del estudiante'
             error_type = 'PRIMER_APELLIDO_ESTUDIANTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         elif request_cliente.get('e_mail') is None:
-            error_ocurrido = True
             message = 'Debe especificar el e_mail del estudiante'
             error_type = 'E_MAIL_ESTUDIANTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         elif request_cliente.get('contrasena') is None:
-            error_ocurrido = True
             message = 'Debe especificar la contrasena del estudiante'
             error_type = 'CONTRASENA_ESTUDIANTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         elif request_cliente.get('cedula_tutor') is None:
-            error_ocurrido = True
             message = 'Debe especificar la cedula del tutor del estudiante'
             error_type = 'CEDULA_TUTOR_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         elif request_cliente.get('carrera') is None:
-            error_ocurrido = True
             message = 'Debe especificar la carrera del estudiante'
             error_type = 'CARRERA_ESTUDIANTE_NOT_SPECIFIED'
-
-        if error_ocurrido:
-            return self.campo_faltante(
-                message=message,
-                error_type=error_type
-            )
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         # Verificar campos opcionales en la
         # solicitud (nombre_2 y apellido_materno)
@@ -142,41 +139,36 @@ class RestApi:
         if current_user.tipo_de_usuario != 'ADMINISTRADOR':
             return self.usuario_no_autorizado()
 
-        # Variable utilizada para levantar un error de campo faltante
-        error_ocurrido = False
-        message = ''
-        error_type = ''
-
         # Verificar que los campos requeridos esten en la solicitud
         if request_cliente.get('cedula_tutor') is None:
-            error_ocurrido = True
             message = 'Debe especificar la cedula del tutor'
             error_type = 'CEDULA_ESTUDIANTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         elif request_cliente.get('primer_nombre') is None:
-            error_ocurrido = True
             message = 'Debe especificar el primer nombre del tutor'
             error_type = 'PRIMER_NOMBRE_ESTUDIANTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         elif request_cliente.get('primer_apellido') is None:
-            error_ocurrido = True
             message = 'Debe especificar el primer apellido del tutor'
             error_type = 'PRIMER_APELLIDO_ESTUDIANTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         elif request_cliente.get('e_mail') is None:
-            error_ocurrido = True
             message = 'Debe especificar el e_mail del tutor'
             error_type = 'E_MAIL_ESTUDIANTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         elif request_cliente.get('contrasena') is None:
-            error_ocurrido = True
             message = 'Debe especificar la contrasena del tutor'
             error_type = 'CONTRASENA_ESTUDIANTE_NOT_SPECIFIED'
-
-        # Verificar si ocurrio un error y devolver json con la respuesta
-        if error_ocurrido:
-            data = responses.campo_faltante(message, error_type)
-            return jsonify(data)
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         # Verificar campos opcionales en la
         # solicitud (nombre2 y segundo apellido)
@@ -231,30 +223,27 @@ class RestApi:
         numero_reporte = request_cliente.get('numero_reporte')
         horas_reporte = request_cliente.get('horas_reporte')
 
-        error_ocurrido = False
-
         if cedula_estudiante is None:
-            error_ocurrido = True
             message = 'Debe especificar la cedula del estudiante'
             error_type = 'CEDULA_ESTUDIANTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         if cedula_tutor is None:
-            error_ocurrido = True
             message = 'Debe especificar la cedula del tutor'
             error_type = 'CEDULA_ESTUDIANTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         if numero_reporte is None:
-            error_ocurrido = True
             message = 'Debe especificar el numero de reporte'
             error_type = 'NUMERO_REPORTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         if horas_reporte is None:
-            error_ocurrido = True
             message = 'Debe especificar las horas del reporte'
             error_type = 'HORAS_REPORTE_NOT_SPECIFIED'
-
-        # Verificar si ocurrio un error y devolver json con la respuesta
-        if error_ocurrido:
             respuesta_api = responses.campo_faltante(message, error_type)
             return jsonify(respuesta_api)
 
@@ -698,25 +687,21 @@ class RestApi:
         cedula_estudiante = request_cliente.get('cedula_estudiante')
         horas_reporte = request_cliente.get('horas_reporte')
 
-        error_ocurrido = False
-
         if id_reporte is None:
-            error_ocurrido = True
             message = 'Debe especificar identificador del reporte'
             error_type = 'ID_REPORTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         if cedula_estudiante is None:
-            error_ocurrido = True
             message = 'Debe especificar la cedula del estudiante'
             error_type = 'CEDULA_ESTUDIANTE_NOT_SPECIFIED'
+            respuesta_api = responses.campo_faltante(message, error_type)
+            return jsonify(respuesta_api)
 
         if horas_reporte is None:
-            error_ocurrido = True
             message = 'Debe especificar las horas del reporte'
             error_type = 'HORAS_REPORTE_NOT_SPECIFIED'
-
-        # Verificar si ocurrio un error y devolver json con la respuesta
-        if error_ocurrido:
             respuesta_api = responses.campo_faltante(message, error_type)
             return jsonify(respuesta_api)
 
