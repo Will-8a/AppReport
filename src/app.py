@@ -25,7 +25,13 @@ from models.model_user import ModelUser
 from models.entities.user import User
 
 app = Flask(__name__)
-csrf = CSRFProtect()
+
+# Se selecciona el ambiente
+config_name = 'development'
+app.config.from_object(config[config_name])
+
+csrf = CSRFProtect(app)
+csrf.init_app(app)
 mysql = MySQL(app)
 login_manager_app = LoginManager(app)
 api = rest_api.RestApi()
@@ -268,10 +274,7 @@ def delete_usuario_tutor():
     return respuesta_api
 
 
-config_name = 'development'
-csrf.init_app(app)
-app.config.from_object(config[config_name])
-
 if __name__ == '__main__':
     # Se selecciona el ambiente
-    app.run(port=app.config['PORT'], host=app.config['HOST'])
+    # app.run(port=app.config['PORT'], host=app.config['HOST'])
+    pass

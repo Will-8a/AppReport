@@ -3,8 +3,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-SECRET_KEY = os.getenv('SECRET_KEY')
-
 
 class Config:
     DEBUG = False
@@ -17,7 +15,7 @@ class Config:
 class ProductionConfig(Config):
     HOST = '0.0.0.0'
     SECRET_KEY = os.getenv('SECRET_KEY')
-    MYSQL_HOST = os.getenv('DATABASE_HOST_UR')
+    MYSQL_HOST = os.getenv('DATABASE_HOST_URL')
     MYSQL_USER = os.getenv('DATABASE_USERNAME')
     MYSQL_PASSWORD = os.getenv('DATABASE_PASSWORD')
     MYSQL_DB = os.getenv('DATABASE_NAME')
