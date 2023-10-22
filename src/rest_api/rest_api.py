@@ -432,8 +432,6 @@ class RestApi:
             'id_tutor': request_cliente.get('cedula_tutor')
         }
 
-        print(datos)
-
         respuesta_api = current_user.read_reportes_tutorados(
             mysql=mysql,
             datos=datos
