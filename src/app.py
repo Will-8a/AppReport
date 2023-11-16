@@ -85,7 +85,7 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/agregar_estudiante', methods=['POST'])
+@app.route('/api/agregar_estudiante', methods=['POST'])
 def create_usuario_estudiante():
     # Se convierte en un diccionario
     # los datos que se envian a la API
@@ -101,7 +101,7 @@ def create_usuario_estudiante():
     return respuesta_api
 
 
-@app.route('/agregar_tutor', methods=['POST'])
+@app.route('/api/agregar_tutor', methods=['POST'])
 def create_usuario_tutor():
     # Se convierte en un diccionario
     # los datos que se envian a la API
@@ -117,7 +117,7 @@ def create_usuario_tutor():
     return respuesta_api
 
 
-@app.route('/nuevo_reporte', methods=['POST'])
+@app.route('/api/nuevo_reporte', methods=['POST'])
 def create_reporte():
     request_cliente = request.json
 
@@ -129,7 +129,7 @@ def create_reporte():
     return respuesta_api
 
 
-@app.route('/leer_estudiante', methods=['GET'])
+@app.route('/api/leer_estudiante', methods=['GET'])
 def read_usuario_estudiante():
     cedula_estudiante = request.args.get('cedula_estudiante')
     request_cliente = {
@@ -143,7 +143,7 @@ def read_usuario_estudiante():
     return respuesta_api
 
 
-@app.route('/leer_tutor', methods=['GET'])
+@app.route('/api/leer_tutor', methods=['GET'])
 def read_usuario_tutor():
     cedula_tutor = request.args.get('cedula_tutor')
     request_cliente = {
@@ -157,7 +157,7 @@ def read_usuario_tutor():
     return respuesta_api
 
 
-@app.route('/leer_reporte', methods=['GET'])
+@app.route('/api/leer_reporte', methods=['GET'])
 def read_reporte_especifico():
     cedula_estudiante = request.args.get('cedula_estudiante')
     numero_reporte = request.args.get('numero_reporte')
@@ -174,7 +174,7 @@ def read_reporte_especifico():
     return respuesta_api
 
 
-@app.route('/leer_reportes_estudiante', methods=['GET'])
+@app.route('/api/leer_reportes_estudiante', methods=['GET'])
 def read_reportes_estudiante_especifico():
     cedula_estudiante = request.args.get('cedula_estudiante')
 
@@ -189,7 +189,7 @@ def read_reportes_estudiante_especifico():
     return respuesta_api
 
 
-@app.route('/leer_reportes_tutorados', methods=['GET'])
+@app.route('/api/leer_reportes_tutorados', methods=['GET'])
 def read_reportes_tutorados():
     cedula_tutor = request.args.get('cedula_tutor')
 
@@ -206,7 +206,7 @@ def read_reportes_tutorados():
     return respuesta_api
 
 
-@app.route('/actualizar_estudiante', methods=['PUT'])
+@app.route('/api/actualizar_estudiante', methods=['PUT'])
 def update_usuario_estudiante():
     request_cliente = request.json
     respuesta_api = api.update_usuario_estudiante(
@@ -217,7 +217,7 @@ def update_usuario_estudiante():
     return respuesta_api
 
 
-@app.route('/actualizar_tutor', methods=['PUT'])
+@app.route('/api/actualizar_tutor', methods=['PUT'])
 def update_usuario_tutor():
     request_cliente = request.json
     respuesta_api = api.update_usuario_tutor(
@@ -228,7 +228,7 @@ def update_usuario_tutor():
     return respuesta_api
 
 
-@app.route('/actualizar_estatus_reporte', methods=['PUT'])
+@app.route('/api/actualizar_estatus_reporte', methods=['PUT'])
 def update_estatus_reporte():
     request_cliente = request.json
     respuesta_api = api.update_estatus_reporte(
@@ -240,7 +240,7 @@ def update_estatus_reporte():
     return respuesta_api
 
 
-@app.route('/actualizar_reporte',  methods=['PUT'])
+@app.route('/api/actualizar_reporte',  methods=['PUT'])
 def update_reporte_especifico():
     request_cliente = request.json
 
@@ -252,7 +252,7 @@ def update_reporte_especifico():
     return respuesta_api
 
 
-@app.route('/eliminar_estudiante', methods=['DELETE'])
+@app.route('/api/eliminar_estudiante', methods=['DELETE'])
 def delete_usuario_estudiante():
     request_cliente = request.json
     respuesta_api = api.delete_usuario_estudiante(
@@ -263,7 +263,7 @@ def delete_usuario_estudiante():
     return respuesta_api
 
 
-@app.route('/eliminar_tutor', methods=['DELETE'])
+@app.route('/api/eliminar_tutor', methods=['DELETE'])
 def delete_usuario_tutor():
     request_cliente = request.json
     respuesta_api = api.delete_usuario_tutor(

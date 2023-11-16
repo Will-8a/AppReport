@@ -2,7 +2,7 @@
 
 ## AppReport API
 
-### Agregar estudiante [/agregar_estudiante]
+### Agregar estudiante [/api/agregar_estudiante]
 
 #### Agregar un nuevo estudiante a la base de datos [POST]
 
@@ -38,7 +38,7 @@ Cuando se ha guardado correctamente al estudiante en la base de datos.
 }
 ```
 
-### Agregar Tutor [/agregar_tutor]
+### Agregar Tutor [/api/agregar_tutor]
 
 #### Agregar un nuevo tutor a la base de datos [POST]
 
@@ -72,7 +72,7 @@ Cuando el nuevo tutor se ha guardado correctamente en la base de datos.
 }
 ```
 
-### Nuevo reporte [/nuevo_reporte] 
+### Nuevo reporte [/api/nuevo_reporte] 
 
 #### Crea un reporte [POST]
 
@@ -109,7 +109,7 @@ Cuando se ha guardado correctamente el reporte en la base de datos.
 }
 ```
 
-### Leer datos estudiante [/leer_estudiante]
+### Leer datos estudiante [/api/leer_estudiante]
 
 #### Leer los datos de un estudiante en la base de datos [GET]
 
@@ -141,7 +141,7 @@ Se envía un json con los datos existentes del usuario en la base de datos.
 }
 ```
 
-### Leer datos tutor [/leer_tutor]
+### Leer datos tutor [/api/leer_tutor]
 
 #### Leer los datos de un tutor en la base de datos [GET]
 
@@ -169,7 +169,7 @@ Se envía un json con los datos existentes del usuario en la base de datos.
 }
 ```
 
-### Leer datos reporte [/leer_reporte]
+### Leer datos reporte [/api/leer_reporte]
 
 #### Leer los datos de un reporte en la base de datos [GET]
 
@@ -200,7 +200,7 @@ Permite a todos los usuarios leer los datos guardados en la base de datos de un 
 }
 ```
 
-### Leer reportes estudiante [/leer_reportes_estudiante]
+### Leer reportes estudiante [/api/leer_reportes_estudiante]
 
 #### Leer todos los reportes de un estudiante [GET]
 
@@ -247,9 +247,9 @@ Permite a los usuarios obtener todos los reportes de la base de datos de un estu
 }
 ```
 
-### Leer reportes tutorados [/leer_reportes_tutorados]
+### Leer reportes tutorados [/api/leer_reportes_tutorados]
 
-#### Leer los reportes tutorados [/GET]
+#### Leer los reportes tutorados [/api/GET]
 
 Permite que un usuario tutor pueda leer todos los reportes que esta tutorando.
 
@@ -305,7 +305,7 @@ Permite que un usuario tutor pueda leer todos los reportes que esta tutorando.
 }
 ```
 
-### Actualizar información de un estudiante [/actualizar_estudiante]
+### Actualizar información de un estudiante [/api/actualizar_estudiante]
 
 #### Actualizar la información de un estudiante en la base de datos [PUT]
 
@@ -338,7 +338,7 @@ Solamente el parámetro cedula_estudiante es obligatorio la solicitud de actuali
 }
 ```
 
-### Actualizar información de un tutor [/actualizar_tutor]
+### Actualizar información de un tutor [/api/actualizar_tutor]
 
 #### Actualizar la información de un tutor en la base de datos [PUT]
 
@@ -369,7 +369,7 @@ Solamente el parámetro cedula_tutor es obligatorio la solicitud de actualizaci�
 }
 ```
 
-### Actualizar estatus reporte [/actualizar_tutor]
+### Actualizar estatus reporte [/api/actualizar_tutor]
 
 #### Actualizar el estatus de un reporte en la base de datos[PUT]
 
@@ -405,7 +405,7 @@ Para que un usuario tutor pueda usar esta función tiene que especificar su cedu
 
 `XXXX` es el estatus cambiado en la base de datos `Aprobado` o `desaporbado`
 
-### Actualizar reporte [/actualizar_reporte]
+### Actualizar reporte [/api/actualizar_reporte]
 
 #### Actualiza la informacion de un reporte [PUT]
 
@@ -441,7 +441,7 @@ Cuando se ha guardado correctamente el reporte en la base de datos.
 }
 ```
 
-### Eliminar estudiante [/eliminar_estudiante]
+### Eliminar estudiante [/api/eliminar_estudiante]
 
 #### Elimina a un estudiante [DELETE]
 
@@ -467,7 +467,7 @@ Cuando se ha guardado correctamente el reporte en la base de datos.
 }
 ```
 
-### Eliminar tutor [/eliminar_tutor]
+### Eliminar tutor [/api/eliminar_tutor]
 
 #### Elimina a un tutor [DELETE]
 
