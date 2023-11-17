@@ -47,6 +47,9 @@ def index():
     if current_user.is_anonymous:
         return redirect(url_for('login'))
 
+    if current_user.tipo_de_usuario == 'ESTUDIANTE':
+        return render_template('estudiante/index.html')
+
     return render_template('index.html')
 
 
@@ -119,8 +122,8 @@ def create_usuario_tutor():
 
 @app.route('/api/nuevo_reporte', methods=['POST'])
 def create_reporte():
-    request_cliente = request.json
-
+    request_cliente = request.form.to_dict()
+    request_cliente.pop('csrf_token')
     respuesta_api = api.create_reporte(
         mysql=mysql,
         current_user=current_user,

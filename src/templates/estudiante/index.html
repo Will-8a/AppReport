@@ -1,0 +1,88 @@
+{% extends './base.html' %}
+
+{% block title %}Inicio | AppReport{% endblock %}
+{% block style%}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/estudiante/index.css')}}">
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='img/inicio.ico')}}">
+{% endblock %}
+
+{% block body %}
+    <!-- Barra de navegacion -->
+    <nav>
+        <input type="checkbox" id="check" />
+        <label for="check" class="checkbtn">
+            <i class="fas fa-bars"></i>
+        </label>
+        <img onclick="mostrarInicio()" src="{{url_for('static', filename='img/logo_oficial.png')}}" alt="logo" class="logo" />
+        <ul>
+            <li><a href="#">Reportes</a></li>
+            <li><a href="mailto:serviciocomunitario@iunav.com">Contacto</a></li>
+        </ul>
+    </nav>
+    <!-- Contenido principal -->
+    <section>
+        <div class="section" id="elementosPrincipales">
+            <h1 class="bienvenido">Bienvenido.</h1>
+            <img src="{{url_for('static', filename='img/bienvenida.png')}}" class="imagen">
+            <input type="button" value="Nuevo reporte" class="boton_nuevo_reporte" onclick="ocultarInicio()">
+        </div>
+        <div id="camposReportes" hidden>
+            <form action="{{ url_for('create_reporte') }}" method="POST">
+                <div class="padding">
+                    <div class="cabezera" id="cabezera">
+                        <input type="hidden" name="cedula_estudiante" value="{{current_user.cedula}}">
+                        <input type="hidden" name="cedula_tutor" value="{{current_user.id_tutor}}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <label for="" class="nroreporte"><b>Nro° de Reporte</b></label>
+                        <input name="numero_reporte" type="number" placeholder="Solo numeros" class="field" id="nreporte" required />
+                        <label for="" class="texthorastotales"><b>Horas Totales</b></label>
+                        <input name="horas_reporte" type="number" placeholder="Solo numeros" class="field" id="horastotales" required />
+                    </div>
+                    <h2>Resumen de actividades</h2>
+                    <label for="Domingo">Domingo</label> 
+                    <br>
+                    <textarea id="resumen_domingo" name="resumen_domingo" placeholder="Escribe tu Resumen aquí..." maxlength="512"></textarea>
+                    <br>
+                    <label for="Lunes">Lunes</label> 
+                    <br>
+                    <textarea id="resumen_lunes" name="resumen_lunes" placeholder="Escribe tu Resumen aquí..." maxlength="512"></textarea> 
+                    <br>
+                    <label for="Martes">Martes</label> 
+                    <br>
+                    <textarea id="resumen_martes" name="resumen_martes" placeholder="Escribe tu Resumen aquí..." maxlength="512"></textarea> 
+                    <br>
+                    <label for="Miercoles">Miercoles</label> 
+                    <br>
+                    <textarea id="resumen_miercoles" name="resumen_miercoles" placeholder="Escribe tu Resumen aquí..." maxlength="512"></textarea> 
+                    <br>
+                    <label for="Jueves">Jueves</label> 
+                    <br>
+                    <textarea id="resumen_jueves" name="resumen_jueves" placeholder="Escribe tu Resumen aquí..." maxlength="512"></textarea> 
+                    <br>
+                    <label for="Viernes">Viernes</label> 
+                    <br>
+                    <textarea id="resumen_viernes" name="resumen_viernes" placeholder="Escribe tu Resumen aquí..." maxlength="512"></textarea> 
+                    <br>
+                    <div class="btn_box">
+                        <input type="submit" value="Enviar" class="botones" id="btn_subir">
+                        <input type="button" value="Cancelar" onclick="mostrarInicio()" class="botones">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Pie de pagina -->
+    <footer>
+        <h4>2023 ® Todos los derechos reservados</h4>
+    </footer>
+
+<script type="text/javascript" src="{{url_for('static', filename='js/app.js')}}"></script>
+<script type="text/javascript">
+    editarBotonSubmit('POST', '{{ url_for("create_reporte") }}')
+</script>
+{% endblock %}
