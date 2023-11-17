@@ -1,40 +1,46 @@
 {% extends './base.html' %}
 
 {% block title %}Login | AppReport{% endblock %}
+{% block style %}
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login_style.css')}}">
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='img/login.ico')}}">
+{% endblock %}
+
 
 {% block body %}
-    <!-- Contenido principal -->
-    <main>
-        <!-- logo -->
-        <div></div>
-        <h2>Iniciar sesion.</h2>
-        <div>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                <br>
-                    {% for message in messages %}
-                    <!-- Div con el alert -->
-                    <div>
-                        <strong>{{ message }}</strong>
-                        <!-- boton para cerrar el alert -->
-                        <button type="button">X</button>
-                    </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-            <form id="loginform" action="/login" method="POST">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="text" name="username" autocomplete="username" placeholder="Usuario" required>
-                
-                <input type="password" name="password" autocomplete="current-password" placeholder="Contraseña" required>
-                
-                <button type="submit">Iniciar sesion</button>
-            </form>
-        </div>
-        <div>
-            <!-- Colocar direccion -->
-            <a href="">¿Olvidaste la contraseña?</a>
-        </div>
-    </main>
+    <!-- Logo de la aplicacion -->
+    <div>
+        <img src="{{url_for('static', filename='img/logo_oficial.png')}}" alt="logo" class="logo">
+    </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages%}
+    <div>
+        <strong>{{ message }}</strong>
+        <button type="button">X</button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div class="container">
+        <h1>Iniciar Sesión.</h1>
+        <form id="loginform" action="/login" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
+            <input type="text" name="username" autocomplete="username" placeholder="Usuario" required>
+
+            <input type="password" name="password" autocomplete="current-password" placeholder="Contraseña" required>
+
+            <input type="submit" value="Inicias sesión" class="btn"/>
+        </form>
+
+        <div class="pass-link">
+            <a href="mailto:serviciocomunitario@iunav.com?subject=Olvidé%20la%20contraseña">¿Olvidaste la contraseña?</a>
+        </div>
+    </div>
+    <footer>
+        <h4> 2023 ® Todos los derechos reservados</h4>
+    </footer>
 {% endblock %}
