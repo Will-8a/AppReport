@@ -25,7 +25,6 @@ class Estudiante(User):
             # read usuario estudiante()
             self.read_datos_estudiante(mysql, datos)
         except Exception as e:
-            print('a')
             # Revertir los cambios si se produce un error
             mysql.connection.rollback()
             print(str(e))
@@ -122,8 +121,6 @@ class Estudiante(User):
                 self.cantidad_reportes = row[2]
                 self.horas_acumuladas = row[3]
         except Exception as e:
-            print('b')
-
             print(str(e))
             return None
         finally:
@@ -140,8 +137,6 @@ class Estudiante(User):
             mysql.connection.commit()
             return True
         except Exception as e:
-            print('c')
-
             mysql.connection.rollback()
             print(str(e))
             return False
