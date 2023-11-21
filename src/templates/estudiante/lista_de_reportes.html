@@ -1,0 +1,100 @@
+{% extends './base.html' %}
+
+{% block title %} Reportes | AppReport {% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/estudiante/lista_de_reportes.css')}}">
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='img/reporte.ico')}}">
+{% endblock %}
+
+{% block body %}
+    <nav>
+        <input type="checkbox" id="check">
+        <label for="check" class="checkbtn">
+            <i class="fas fa-bars"></i>
+        </label>
+        <a href="{{url_for('index')}}">
+            <img src="{{url_for('static', filename='img/logo_oficial.png')}}" alt="logo" class="logo" />
+        </a>
+        <ul>
+            <li><a href="{{url_for('index')}}">Inicio</a></li>
+            <li><a href="mailto:serviciocomunitario@iunav.com">Contacto</a></li>
+        </ul>
+    </nav>
+    <section>
+        <div class="hscroll">
+            <table>
+                <tr class="cabezera">
+                    <th>ID</th>
+                    <th>N° Reporte</th>
+                    <th>Horas</th>
+                    <th>Aprobacion tutor</th>
+                    <th>Aprobacion Coordinador</th>
+                    <th></th>
+                </tr>
+            </table>
+        </div>
+    </section>
+    <footer>
+        <h4> 2023 ® Todos los derechos reservados</h4>
+    </footer>
+
+    <script type="text/javascript">
+        // funcion para ir a url de un reporte
+        function leer_reporte(numero_reporte) {
+            console.log(numero_reporte)
+        }
+
+        // Configura la petición con la lista de reportes
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+               var data = JSON.parse(this.responseText);
+
+               var table = document.getElementsByTagName('table')[0];
+
+                for (let valor in data) {
+                    // insertar fila al final de la tabla
+                    var new_row = table.insertRow(-1)
+                    // Inserta nuevas celdas en la fila
+                    var cell1 = new_row.insertCell(0);
+                    var cell2 = new_row.insertCell(1);
+                    var cell3 = new_row.insertCell(2);
+                    var cell4 = new_row.insertCell(3);
+                    var cell5 = new_row.insertCell(4);
+                    var cell6 = new_row.insertCell(5);
+
+                    // Agregar valores en la fila
+                    cell1.innerHTML = data[valor].id_reporte;
+                    cell2.innerHTML = data[valor].numero_reporte;
+                    cell3.innerHTML = data[valor].horas_reporte;
+                    cell4.innerHTML = data[valor].aprobacion_tutor;
+                    cell5.innerHTML = data[valor].aprobacion_coordinador;
+                    cell6.innerHTML = '<button onclick="leer_reporte(' + data[valor].numero_reporte + ')">Ver Reporte</button>';
+                }
+
+                // ordenar reportes por numero de reporte
+                var rows = Array.from(table.getElementsByTagName('tr')).slice(1);
+
+                // Ordena las filas en base al contenido de la columna "Número de Reporte"
+                rows.sort(function(a, b) {
+                    var numA = parseInt(a.cells[1].textContent);
+                    var numB = parseInt(b.cells[1].textContent);
+                    return numA - numB;
+                });
+
+                // Actualiza la tabla con las filas ordenadas
+                rows.forEach(function(row) {
+                    table.appendChild(row);
+                });
+            }
+        };
+        url = "{{url_for('read_reportes_estudiante_especifico')}}?cedula_estudiante={{current_user.cedula}}"
+        xhttp.open("GET", url, true);
+        xhttp.send();
+    </script>
+{% endblock %}

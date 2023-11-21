@@ -277,6 +277,14 @@ def delete_usuario_tutor():
     return respuesta_api
 
 
+@app.route('/f/lista_de_reportes')
+def lista_reportes():
+    if current_user.is_anonymous:
+        return redirect(url_for('login'))
+    if current_user.tipo_de_usuario == 'ESTUDIANTE':
+        return render_template('estudiante/lista_de_reportes.html')
+
+
 if __name__ == '__main__':
     # Se selecciona el ambiente
     # app.run(port=app.config['PORT'], host=app.config['HOST'])

@@ -19,7 +19,7 @@
         </label>
         <img onclick="mostrarInicio()" src="{{url_for('static', filename='img/logo_oficial.png')}}" alt="logo" class="logo" />
         <ul>
-            <li><a href="#">Reportes</a></li>
+            <li><a href="{{ url_for('lista_reportes') }}">Reportes</a></li>
             <li><a href="mailto:serviciocomunitario@iunav.com">Contacto</a></li>
         </ul>
     </nav>
