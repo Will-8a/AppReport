@@ -102,14 +102,14 @@ class ModelUser():
                     )
                     row = cursor.fetchone()
                     user_information.update({
-                        'id_tutor': user_information.get('cedula'),
+                        'id_tutor': row[0],
                         'carrera': row[1],
                         'cantidad_reportes': row[2],
                         'horas_acumuladas': row[3]
                     })
 
                     usuario_logeado = Estudiante(
-                        cedula=row[0],
+                        cedula=user_information.get('cedula'),
                         contrasena=None,
                         datos=user_information
                     )
