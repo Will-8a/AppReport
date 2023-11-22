@@ -25,55 +25,55 @@
         </ul>
     </nav>
     <div id="camposReportes">
-            <form>
-                <div class="padding">
-                    <div class="cabezera" id="cabezera">
-                        <label for="" class="nroreporte"><b>Nro° de Reporte</b></label>
-                        <input name="numero_reporte" type="number" placeholder="Numero del reporte" class="field" id="nreporte" readonly required />
+        <form>
+            <div class="padding">
+                <div class="cabezera" id="cabezera">
+                    <input type="hidden" name="id_reporte" value="" id="id_reporte">
+                    <input type="hidden" name="cedula_estudiante" value="{{current_user.cedula}}">
+                    <input type="hidden" name="cedula_tutor" value="{{current_user.id_tutor}}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-                        <label for="" class="texthorastotales"><b>Horas Totales</b></label>
-                        <input name="horas_reporte" type="number" placeholder="Horas del reporte" class="field" id="horastotales" readonly required />
-                    </div>
-                    <h2>Resumen de actividades</h2>
-                    <label for="Domingo">Domingo</label> 
-                    <br>
-                    <textarea id="resumen_domingo" name="resumen_domingo" readonly></textarea> 
-                    <br>
-                    <label for="Lunes">Lunes</label> 
-                    <br>
-                    <textarea id="resumen_lunes" name="resumen_lunes" readonly></textarea> 
-                    <br>
-                    <label for="Martes">Martes</label> 
-                    <br>
-                    <textarea id="resumen_martes" name="resumen_martes" readonly></textarea> 
-                    <br>
-                    <label for="Miercoles">Miercoles</label> 
-                    <br>
-                    <textarea id="resumen_miercoles" name="resumen_miercoles" readonly></textarea> 
-                    <br>
-                    <label for="Jueves">Jueves</label> 
-                    <br>
-                    <textarea id="resumen_jueves" name="resumen_jueves" readonly></textarea> 
-                    <br>
-                    <label for="Viernes">Viernes</label> 
-                    <br>
-                    <textarea id="resumen_viernes" name="resumen_viernes" readonly></textarea> 
-                    <br>
-                    <div class="btn_box">
-                        <input type="button" value="Editar" onclick="editar_reporte()" class="botones">
-                        <input type="button" value="Cerrar" onclick="cerrar_reporte()" class="botones">
-                    </div>
+                    <label for="" class="nroreporte"><b>Nro° de Reporte</b></label>
+                    <input name="numero_reporte" type="number" placeholder="Numero del reporte" class="field" id="nreporte" readonly required />
+
+                    <label for="" class="texthorastotales"><b>Horas Totales</b></label>
+                    <input name="horas_reporte" type="number" placeholder="Horas del reporte" class="field" id="horastotales" required />
                 </div>
-            </form>
-        </div>
+                <h2>Resumen de actividades</h2>
+                <label for="Domingo">Domingo</label> 
+                <br>
+                <textarea id="resumen_domingo" name="resumen_domingo"></textarea> 
+                <br>
+                <label for="Lunes">Lunes</label> 
+                <br>
+                <textarea id="resumen_lunes" name="resumen_lunes"></textarea> 
+                <br>
+                <label for="Martes">Martes</label> 
+                <br>
+                <textarea id="resumen_martes" name="resumen_martes"></textarea> 
+                <br>
+                <label for="Miercoles">Miercoles</label> 
+                <br>
+                <textarea id="resumen_miercoles" name="resumen_miercoles"></textarea> 
+                <br>
+                <label for="Jueves">Jueves</label> 
+                <br>
+                <textarea id="resumen_jueves" name="resumen_jueves"></textarea> 
+                <br>
+                <label for="Viernes">Viernes</label> 
+                <br>
+                <textarea id="resumen_viernes" name="resumen_viernes"></textarea> 
+                <br>
+                <div class="btn_box">
+                    <input type="submit" value="Guardar cambios" class="botones" id="btn_subir">
+                    <input type="button" value="Cancelar" onclick="cerrar_reporte()" class="botones">
+                </div>
+            </div>
+        </form>
+    </div>
 
+    <script type="text/javascript" src="{{url_for('static', filename='js/app.js')}}"></script>
     <script type="text/javascript">
-        function editar_reporte() {
-            numero_de_reporte = document.getElementById('nreporte').value
-            url = '/f/editar_reporte/'
-            window.location.href = url + numero_de_reporte
-        }
-
         function cerrar_reporte() {
             url = '{{url_for("lista_reportes")}}'
             window.location.href = url
@@ -84,6 +84,7 @@
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     var data = JSON.parse(this.responseText);
+                    document.getElementById('id_reporte').value = data['id_reporte']
                     document.getElementById('nreporte').value = data['numero_reporte'];
                     document.getElementById('horastotales').value = data['horas_reporte']
                     document.getElementById('resumen_domingo').value = data['resumen_domingo']
@@ -103,5 +104,7 @@
         }
 
         cargar_reporte()
+
+        editarBotonSubmit('PUT', '{{ url_for("update_reporte_especifico") }}')
     </script>
 {% endblock %}

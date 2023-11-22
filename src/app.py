@@ -245,8 +245,8 @@ def update_estatus_reporte():
 
 @app.route('/api/actualizar_reporte',  methods=['PUT'])
 def update_reporte_especifico():
-    request_cliente = request.json
-
+    request_cliente = request.form.to_dict()
+    request_cliente.pop('csrf_token')
     respuesta_api = api.update_reporte_especifico(
         mysql=mysql,
         current_user=current_user,
@@ -294,6 +294,22 @@ def reporte_especifico(numero_reporte):
         'numero_reporte': numero_reporte
     }
     return render_template('estudiante/reporte_especifico.html', data=data)
+
+
+@app.route('/f/editar_reporte')
+def editar_reporte_main():
+    return redirect(url_for('lista_reportes'))
+
+
+@app.route('/f/editar_reporte/<numero_reporte>')
+def editar_reporte(numero_reporte):
+    if current_user.is_anonymous:
+        return redirect(url_for('login'))
+
+    data = {
+        'numero_reporte': numero_reporte
+    }
+    return render_template('estudiante/editar_reporte.html', data=data)
 
 
 if __name__ == '__main__':
