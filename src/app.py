@@ -283,6 +283,8 @@ def lista_reportes():
         return redirect(url_for('login'))
     if current_user.tipo_de_usuario == 'ESTUDIANTE':
         return render_template('estudiante/lista_de_reportes.html')
+    elif current_user.tipo_de_usuario == 'TUTOR':
+        return render_template('tutor/lista_de_reportes.html')
 
 
 @app.route('/f/lista_de_reportes/<numero_reporte>')
