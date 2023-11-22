@@ -1,19 +1,46 @@
 {% extends './base.html' %}
 
-{% block title %}AppReport{% endblock %}
+{% block title %}Inicio | AppReport{% endblock %}
+{% block style%}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css')}}">
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='img/inicio.ico')}}">
+{% endblock %}
 
 {% block body %}
     <!-- Barra de navegacion -->
-    <nav></nav>
-
+    <nav>
+        <input type="checkbox" id="check" />
+        <label for="check" class="checkbtn">
+            <i class="fas fa-bars"></i>
+        </label>
+        <img onclick="mostrarInicio()" src="{{url_for('static', filename='img/logo_oficial.png')}}" alt="logo" class="logo" />
+        <ul>
+            <li><a href="{{ url_for('lista_reportes') }}">Reportes</a></li>
+            <li><a href="mailto:serviciocomunitario@iunav.com">Contacto</a></li>
+        </ul>
+    </nav>
     <!-- Contenido principal -->
-    <main>
-        <div>
-            <h2>Bienvenido.</h2>
-            <button>Nuevo reporte</button>
+    <section>
+        <div class="section" id="elementosPrincipales">
+            <h1 class="bienvenido">Bienvenido.</h1>
+            <img src="{{url_for('static', filename='img/bienvenida.png')}}" class="imagen">
+            <input type="button" value="Ver reportes" class="boton_nuevo_reporte" onclick="ver_reportes()">
         </div>
-    </main>
+    </section>
 
     <!-- Pie de pagina -->
-    <footer>2023 ® Todos los derechos reservados</footer>
+    <footer>
+        <h4>2023 ® Todos los derechos reservados</h4>
+    </footer>
+
+<script type="text/javascript">
+    function ver_reportes() {
+        url = '{{url_for("lista_reportes")}}'
+        window.location.href = url
+    }
+</script>
 {% endblock %}
