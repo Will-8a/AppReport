@@ -1,0 +1,106 @@
+{% extends './base.html' %}
+
+{% block title %} Reporte {{ data.id_reporte }} | AppReport {% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Play&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/estudiante/index.css')}}">
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='img/reporte.ico')}}">
+{% endblock %}
+
+{% block body %}
+    <nav>
+        <input type="checkbox" id="check">
+        <label for="check" class="checkbtn">
+            <i class="fas fa-bars"></i>
+        </label>
+        <a href="{{url_for('index')}}"><img src="{{url_for('static', filename='img/logo_oficial.png')}}" alt="logo" class="logo" /></a>
+        <ul>
+            <li><a href="{{url_for('index')}}">Inicio</a></li>
+            <li><a href="{{url_for('lista_reportes')}}">Reportes</a></li>
+            <li><a href="mailto:serviciocomunitario@iunav.com">Contacto</a></li>
+        </ul>
+    </nav>
+    <div id="camposReportes">
+            <form>
+                <div class="padding">
+                    <div class="cabezera" id="cabezera">
+                        <label for="" class="nroreporte"><b>Nro° de Reporte</b></label>
+                        <input name="numero_reporte" type="number" placeholder="Numero del reporte" class="field" id="nreporte" readonly required />
+
+                        <label for="" class="texthorastotales"><b>Horas Totales</b></label>
+                        <input name="horas_reporte" type="number" placeholder="Horas del reporte" class="field" id="horastotales" readonly required />
+                    </div>
+                    <h2>Resumen de actividades</h2>
+                    <label for="Domingo">Domingo</label> 
+                    <br>
+                    <textarea id="resumen_domingo" name="resumen_domingo" readonly></textarea> 
+                    <br>
+                    <label for="Lunes">Lunes</label> 
+                    <br>
+                    <textarea id="resumen_lunes" name="resumen_lunes" readonly></textarea> 
+                    <br>
+                    <label for="Martes">Martes</label> 
+                    <br>
+                    <textarea id="resumen_martes" name="resumen_martes" readonly></textarea> 
+                    <br>
+                    <label for="Miercoles">Miercoles</label> 
+                    <br>
+                    <textarea id="resumen_miercoles" name="resumen_miercoles" readonly></textarea> 
+                    <br>
+                    <label for="Jueves">Jueves</label> 
+                    <br>
+                    <textarea id="resumen_jueves" name="resumen_jueves" readonly></textarea> 
+                    <br>
+                    <label for="Viernes">Viernes</label> 
+                    <br>
+                    <textarea id="resumen_viernes" name="resumen_viernes" readonly></textarea> 
+                    <br>
+                    <div class="btn_box">
+                        <input type="button" value="Editar" onclick="editar_reporte()" class="botones">
+                        <input type="button" value="Cerrar" onclick="cerrar_reporte()" class="botones">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    <script type="text/javascript">
+        function editar_reporte() {
+            numero_de_reporte = document.getElementById('nreporte').value
+            console.log(numero_de_reporte)
+        }
+
+        function cerrar_reporte() {
+            url = '{{url_for("lista_reportes")}}'
+            window.location.href = url
+        }
+
+        function cargar_reporte() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    document.getElementById('nreporte').value = data['numero_reporte'];
+                    document.getElementById('horastotales').value = data['horas_reporte']
+                    document.getElementById('resumen_domingo').value = data['resumen_domingo']
+                    document.getElementById('resumen_lunes').value = data['resumen_lunes']
+                    document.getElementById('resumen_martes').value = data['resumen_martes']
+                    document.getElementById('resumen_miercoles').value = data['resumen_miercoles']
+                    document.getElementById('resumen_jueves').value = data['resumen_jueves']
+                    document.getElementById('resumen_viernes').value = data['resumen_viernes']
+                }
+            };
+
+            url = '{{url_for("read_reporte_especifico")}}'
+            parametros = '?cedula_estudiante={{current_user.cedula}}&numero_reporte={{data.numero_reporte}}'
+            url = url + parametros
+            xhttp.open("GET", url, true);
+            xhttp.send();
+        }
+
+        cargar_reporte()
+    </script>
+{% endblock %}

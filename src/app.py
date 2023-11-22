@@ -285,6 +285,17 @@ def lista_reportes():
         return render_template('estudiante/lista_de_reportes.html')
 
 
+@app.route('/f/lista_de_reportes/<numero_reporte>')
+def reporte_especifico(numero_reporte):
+    if current_user.is_anonymous:
+        return redirect(url_for('login'))
+
+    data = {
+        'numero_reporte': numero_reporte
+    }
+    return render_template('estudiante/reporte_especifico.html', data=data)
+
+
 if __name__ == '__main__':
     # Se selecciona el ambiente
     # app.run(port=app.config['PORT'], host=app.config['HOST'])
