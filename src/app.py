@@ -295,7 +295,10 @@ def reporte_especifico(numero_reporte):
     data = {
         'numero_reporte': numero_reporte
     }
-    return render_template('estudiante/reporte_especifico.html', data=data)
+    if current_user.tipo_de_usuario == 'ESTUDIANTE':
+        return render_template('estudiante/reporte_especifico.html', data=data)
+    elif current_user.tipo_de_usuario == 'TUTOR':
+        return render_template('tutor/reporte_especifico.html', data=data)
 
 
 @app.route('/f/editar_reporte')

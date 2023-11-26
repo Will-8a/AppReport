@@ -43,8 +43,14 @@
 
     <script type="text/javascript">
         // funcion para ir a url de un reporte
-        function leer_reporte(numero_reporte) {
-            console.log(numero_reporte);
+        function leer_reporte(report) {
+            // guardar informacion de reporte en la session
+            // para cambiar de url
+            sessionStorage.setItem("reporte_seleccionado", JSON.stringify(report));
+
+            url ='/f/lista_de_reportes'
+            parametros = '/' + report.numero_reporte
+            window.location.href = url + parametros
         }
 
         // Configura la petición con la lista de reportes
@@ -56,6 +62,8 @@
 
                var table = document.getElementsByTagName('table')[0];
                 for (let valor in data) {
+                    // guardar la informacion del reporte
+                    report = data[valor]
                     // // insertar fila al final de la tabla
                     var new_row = table.insertRow(-1)
                     // // Inserta nuevas celdas en la fila
@@ -70,7 +78,7 @@
                     cell2.innerHTML = data[valor].numero_reporte;
                     cell3.innerHTML = data[valor].aprobacion_tutor;
                     cell4.innerHTML = data[valor].aprobacion_coordinador;
-                    cell5.innerHTML = '<button onclick="leer_reporte(' + data[valor].numero_reporte + ')">Ver Reporte</button>';
+                    cell5.innerHTML = '<button onclick=\'leer_reporte(' + JSON.stringify(Object.assign({}, report)) + ')\'>Ver Reporte</button>';
                 }
 
                 // ordenar reportes por numero de reporte
